@@ -6,14 +6,13 @@
 # include <ctype.h>
 # include <unistd.h>
 #include <fcntl.h>
-// #define BUFFER_SIZE 35
-char	*ft_strchr(const char *str, int c);
-char	*ft_strjoin(char const *s1, char const *s2);
+#ifndef BUFFER_SIZE
+#define BUFFER_SIZE 35
+#endif
+char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strdup(const char *s1);
-char	*ft_strcpy(char *dst, const char *src);
 size_t	ft_strlen(const char *s);
-char	*ft_strnew(size_t size);
-int get_next_line(int fd, char **line);
-void	ft_strclr(char *s);
-char	*ft_strrchr(const char *s, int c);
+int     get_next_line(int fd, char **line);
+int		ft_strchr(const char *str);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
 #endif

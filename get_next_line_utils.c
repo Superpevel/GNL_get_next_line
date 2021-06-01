@@ -1,83 +1,4 @@
 #include "get_next_line.h"
-char	*ft_strchr(const char *str, int c)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i] != c)
-		i++;
-	if (c == str[i])
-		return (((char *)str + i));
-	else
-		return (NULL);
-}
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i] != '\0')
-	{
-		i++;
-	}
-	return (i);
-}
-char	*ft_strnew(size_t size)
-{
-	char	*str;
-
-	if (!(str = (char *)malloc(sizeof(char) * size + 1)))
-		return (NULL);
-	str[size] = '\0';
-	while (size--)
-		str[size] = '\0';
-	return (str);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	size_t	i;
-	size_t	j;
-	size_t	k;
-	char	*new;
-
-	if (!s1)
-		return (NULL);
-	i = ft_strlen(s1);
-	j = ft_strlen(s2);
-	new = malloc(sizeof(char) * (i + j + 1));
-	if (!new)
-		return (NULL);
-	k = -1;
-	while (++k < i)
-		new[k] = s1[k];
-	j = k + j;
-	i = 0;
-	while (k < j)
-	{
-		new[k] = s2[i];
-		k++;
-		i++;
-	}
-	new[k] = '\0';
-	return (new);
-}
-char	*ft_strcpy(char *dst, const char *src)
-{
-	size_t i;
-
-	i = 0;
-	while (src[i])
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (dst);
-}
-
-
 char	*ft_strdup(const char *s1)
 {
 	size_t	i;
@@ -97,25 +18,103 @@ char	*ft_strdup(const char *s1)
 	s2[j] = '\0';
 	return (s2);
 }
-
-void	ft_strclr(char *s)
+size_t	ft_strlen(const char *str)
 {
-	if (s)
-		while (*s)
-			*s++ = '\0';
+	size_t	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i] != '\0')
+		i++;
+	return (i);
 }
-char	*ft_strrchr(const char *s, int c)
-{
-	char	*ptr;
-	char	sym;
 
-	ptr = (char *)s + ft_strlen(s);
-	sym = (char)c;
-	while (ptr >= s)
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*a;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	if (!(a = malloc(ft_strlen(s1) + ft_strlen(s2) + 1)))
+		return (NULL);
+	if (s1)
+		while (s1[j] != '\0')
+			a[i++] = s1[j++];
+	j = 0;
+	free(s1);
+	if (s2)
+		while (s2[j] != '\0')
+			a[i++] = s2[j++];
+	a[i] = '\0';
+	return (a);
+}
+
+int		ft_strchr(const char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i] != '\0')
 	{
-		if (*ptr == sym)
-			return (ptr);
-		ptr--;
+		if (str[i] == '\n')
+		{
+			return (1);
+		}
+		i++;
 	}
-	return (NULL);
+	return (0);
+}
+
+size_t	max_len(char const *s, unsigned int start)
+{
+	size_t	i;
+
+	i = ft_strlen(s) - start ;
+	return (i);
+}
+
+char	*ft_sub_fill(char const *s, unsigned int start, size_t len, char *sub)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < len)
+	{
+		sub[i] = s[start];
+		i++;
+		start++;
+	}
+	sub[i] = '\0';
+	return (sub);
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char	*sub;
+	size_t	j;
+
+	if (!s)
+		return (NULL);
+	if (start >= (unsigned int)ft_strlen(s))
+		return (ft_strdup(""));
+	j = max_len(s, start);
+	if (len < j)
+	{
+		sub = malloc(sizeof(char) * (len + 1));
+		if (!(sub))
+			return (NULL);
+		return (ft_sub_fill(s, start, len, sub));
+	}
+	else
+	{
+		sub = malloc(sizeof(char) * (j + 1));
+		if (!(sub))
+			return (NULL);
+		return (ft_sub_fill(s, start, j, sub));
+	}
 }
